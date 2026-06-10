@@ -15,7 +15,8 @@ SECRET_KEY = os.getenv(
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = [
-    "playficentdjango.onrender.com",  # Change for production
+    "playficentdjango.onrender.com",
+    "playficentdjango-1.onrender.com",
 ]
 
 # ==================================================
@@ -154,11 +155,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ==================================================
 
 CORS_ALLOWED_ORIGINS = [
-     "playficentdjango.onrender.com",
-    "playficentdjango-1.onrender.com",
-
-    "http://localhost:5174",
-    "http://127.0.0.1:5174",
+    "https://playficentdjango.onrender.com",
+    "https://playficentdjango-1.onrender.com",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -168,11 +166,8 @@ CORS_ALLOW_CREDENTIALS = True
 # ==================================================
 
 CSRF_TRUSTED_ORIGINS = [
-    "playficentdjango.onrender.com",
-    "playficentdjango-1.onrender.com",
-
-    "http://localhost:5174",
-    "http://127.0.0.1:5174",
+    "https://playficentdjango.onrender.com",
+    "https://playficentdjango-1.onrender.com",
 ]
 
 SESSION_COOKIE_SAMESITE = "None"
