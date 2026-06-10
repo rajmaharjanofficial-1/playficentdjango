@@ -1,0 +1,243 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+:root {
+  --neon-green: #39FF14;
+  --neon-blue: #00D9FF;
+  --neon-pink: #FF10F0;
+  --neon-yellow: #FFD700;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Press Start 2P', monospace;
+  background: #000;
+  color: var(--neon-green);
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* CRT Overlay Effect */
+.crt-overlay {
+  background-color: #000;
+  background-image: 
+    linear-gradient(0deg, transparent 24%, rgba(255, 0, 0, 0.05) 25%, rgba(255, 0, 0, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 0, 0, 0.05) 75%, rgba(255, 0, 0, 0.05) 76%, transparent 77%, transparent),
+    linear-gradient(90deg, transparent 24%, rgba(255, 0, 0, 0.05) 25%, rgba(255, 0, 0, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 0, 0, 0.05) 75%, rgba(255, 0, 0, 0.05) 76%, transparent 77%, transparent);
+  background-size: 50px 50px;
+  position: relative;
+}
+
+.crt-overlay::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    0deg,
+    rgba(255, 0, 0, 0.03) 0%,
+    transparent 2%,
+    transparent 98%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+  pointer-events: none;
+  z-index: 999;
+}
+
+.crt-overlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.2) 100%);
+  pointer-events: none;
+  z-index: 998;
+}
+
+/* Animations */
+@keyframes glow-pulse {
+  0%, 100% {
+    text-shadow: 0 0 5px var(--neon-green), 0 0 10px var(--neon-green);
+  }
+  50% {
+    text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green), 0 0 30px var(--neon-green);
+  }
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-60px) scale(0.8);
+    opacity: 0;
+  }
+}
+
+@keyframes screen-flicker {
+  0%, 100% {
+    opacity: 1;
+  }
+  5% {
+    opacity: 0.98;
+  }
+  10% {
+    opacity: 1;
+  }
+}
+
+@keyframes combo-bounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes laser-pulse {
+  0%, 100% {
+    opacity: 1;
+    stroke-width: 3;
+  }
+  50% {
+    opacity: 0.7;
+    stroke-width: 2;
+  }
+}
+
+@keyframes explosion-ring {
+  0% {
+    r: 2px;
+    opacity: 1;
+  }
+  100% {
+    r: 40px;
+    opacity: 0;
+  }
+}
+
+@keyframes particle-burst {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
+}
+
+.glow-text {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.floating-damage {
+  animation: float-up 1.5s ease-out forwards;
+}
+
+.combo-pulse {
+  animation: combo-bounce 0.5s ease-in-out;
+}
+
+/* Utility Classes */
+.text-shadow-red {
+  text-shadow: 0 0 10px #FF0000, 0 0 20px #FF0000;
+}
+
+.text-shadow-green {
+  text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
+}
+
+.text-shadow-yellow {
+  text-shadow: 0 0 10px var(--neon-yellow), 0 0 20px var(--neon-yellow);
+}
+
+.neon-border {
+  border: 2px solid var(--neon-green);
+  box-shadow: 0 0 10px var(--neon-green), inset 0 0 10px var(--neon-green);
+}
+
+.neon-border-red {
+  border: 2px solid #FF0000;
+  box-shadow: 0 0 10px #FF0000, inset 0 0 10px rgba(255, 0, 0, 0.3);
+}
+
+.scanlines {
+  background-image: linear-gradient(
+    0deg,
+    transparent 24%,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.05) 26%,
+    transparent 27%,
+    transparent 74%,
+    rgba(255, 255, 255, 0.05) 75%,
+    rgba(255, 255, 255, 0.05) 76%,
+    transparent 77%,
+    transparent
+  );
+  background-size: 100% 4px;
+}
+
+/* Tailwind custom utilities */
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Button Styling */
+button {
+  font-family: 'Press Start 2P', monospace;
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+button:hover:not(:disabled) {
+  transform: scale(1.05);
+  text-shadow: 0 0 10px var(--neon-green);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Input Styling */
+input[type="text"],
+input[type="password"] {
+  font-family: 'Press Start 2P', monospace;
+  color: var(--neon-green);
+}
+
+input::placeholder {
+  color: rgba(57, 255, 20, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .font-press-start {
+    font-size: 0.75rem;
+  }
+}
