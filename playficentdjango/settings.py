@@ -132,9 +132,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
@@ -156,7 +154,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ==================================================
 
 CORS_ALLOWED_ORIGINS = [
-    "https://playficentdjango-1.onrender.com/",
+    "https://playficentdjango-1.onrender.com",
     "http://127.0.0.1:5173",
 
     "http://localhost:5174",
@@ -170,7 +168,7 @@ CORS_ALLOW_CREDENTIALS = True
 # ==================================================
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://playficentdjango-1.onrender.com/",
+    "https://playficentdjango-1.onrender.com",
     "http://127.0.0.1:5173",
 
     "http://localhost:5174",
