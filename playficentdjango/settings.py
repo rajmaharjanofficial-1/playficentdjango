@@ -176,11 +176,15 @@ CSRF_TRUSTED_ORIGINS = [
     "https://playficentdjango-1.onrender.com",
 ]
 
-SESSION_COOKIE_SAMESITE = "None"
-CSRF_COOKIE_SAMESITE = "None"
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
 
+SESSION_COOKIE_NAME = "sessionid"
+SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = "None"
+
 CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = "None"
 
 # ==================================================
 # CACHE
