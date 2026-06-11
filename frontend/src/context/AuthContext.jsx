@@ -1,8 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from "react";
 
-const API_BASE = 'https://playficentdjango.onrender.com/api';
+const API_BASE =
+  import.meta.env.VITE_API_URL ||
+  "https://playficentdjango.onrender.com/api";
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export const useAuth = () => useContext(AuthContext);
 
@@ -15,122 +17,162 @@ export function AuthProvider({ children }) {
   }, []);
 
   const fetchMe = async () => {
-    setLoading(true);
     try {
+      setLoading(true);
+
       const res = await fetch(`${API_BASE}/auth/me`, {
-        credentials: 'include'
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        setUser(data);
-      } else {
+      if (!res.ok) {
         setUser(null);
+        return;
       }
-    } catch (e) {
-      console.error('Failed to fetch user', e);
-      setUser(null);
-    }
 
-    setLoading(false);
+      const data = await res.json();
+      setUser(data);
+    } catch (error) {
+      console.error("Failed to fetch user:", error);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const login = async (username, password) => {
-    const res = await fetch(`${API_BASE}/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include',
-      body: JSON.stringify({ username, password })
-    });
+    try {
+      const res = await fetch(`${API_BASE}/auth/login`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
 
-    if (res.ok) {
       const data = await res.json();
-      setUser(data);
-      return { success: true };
-    }
 
-    const err = await res.json();
-    return {
-      success: false,
-      error: err.error || 'Login failed'
-    };
+      if (!res.ok) {
+        return {
+          success: false,
+          error: data.error || "Login failed",
+        };
+      }
+
+      setUser(data);
+
+      return {
+        success: true,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
   };
 
   const register = async (username, password) => {
-    const res = await fetch(`${API_BASE}/auth/register`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include',
-      body: JSON.stringify({ username, password })
-    });
+    try {
+      const res = await fetch(`${API_BASE}/auth/register`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
 
-    if (res.ok) {
       const data = await res.json();
-      setUser(data);
-      return { success: true };
-    }
 
-    const err = await res.json();
-    return {
-      success: false,
-      error: err.error || 'Registration failed'
-    };
+      if (!res.ok) {
+        return {
+          success: false,
+          error: data.error || "Registration failed",
+        };
+      }
+
+      setUser(data);
+
+      return {
+        success: true,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
   };
 
   const logout = async () => {
-    await fetch(`${API_BASE}/auth/logout`, {
-      method: 'POST',
-      credentials: 'include'
-    });
-
-    setUser(null);
+    try {
+      await fetch(`${API_BASE}/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      setUser(null);
+    }
   };
 
   const updateProfile = async (updates) => {
     try {
       const res = await fetch(`${API_BASE}/profile/me`, {
-        method: 'PUT',
+        method: "PUT",
+        credentials: "include",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        credentials: 'include',
-        body: JSON.stringify(updates)
+        body: JSON.stringify(updates),
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        setUser(data);
-        return { success: true };
+      const data = await res.json();
+
+      if (!res.ok) {
+        return {
+          success: false,
+          error: data.error || "Update failed",
+        };
       }
 
-      const err = await res.json();
+      setUser(data);
+
       return {
-        success: false,
-        error: err.error || 'Update failed'
+        success: true,
       };
-    } catch (e) {
+    } catch (error) {
       return {
         success: false,
-        error: e.message
+        error: error.message,
       };
     }
   };
 
+  const value = {
+    user,
+    loading,
+    login,
+    register,
+    logout,
+    updateProfile,
+    fetchMe,
+  };
+
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        loading,
-        login,
-        register,
-        logout,
-        updateProfile
-      }}
-    >
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
