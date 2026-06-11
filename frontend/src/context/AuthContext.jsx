@@ -44,40 +44,45 @@ export function AuthProvider({ children }) {
   };
 
   const login = async (username, password) => {
-    try {
-      const res = await fetch(`${API_BASE}/auth/login`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
-      });
+  try {
+    const res = await fetch(`${API_BASE}/auth/login`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    });
 
-      const data = await res.json();
+    console.log("Login status:", res.status);
 
-      if (!res.ok) {
-        return {
-          success: false,
-          error: data.error || "Login failed",
-        };
-      }
+    const data = await res.json();
+    console.log("Login response:", data);
 
-      setUser(data);
-
-      return {
-        success: true,
-      };
-    } catch (error) {
+    if (!res.ok) {
       return {
         success: false,
-        error: error.message,
+        error: data.error || "Login failed",
       };
     }
-  };
+
+    setUser(data);
+
+    // Immediately check auth state
+    await fetchMe();
+
+    return { success: true };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      error: error.message,
+    };
+  }
+};
 
   const register = async (username, password) => {
     try {
