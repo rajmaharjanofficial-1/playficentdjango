@@ -17,9 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from core.api import api
+from django.http import JsonResponse
+
+def home(request):
+    return JsonResponse({
+        "status": "ok",
+        "message": "Playficent Django API is running 🚀"
+    })
 
 urlpatterns = [
+    path('', home),
     path('admin/', admin.site.urls),
     path('api/', api.urls),
 ]
-
