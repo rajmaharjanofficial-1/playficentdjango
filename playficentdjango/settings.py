@@ -112,7 +112,8 @@ USE_TZ = True
 # STATIC
 # =========================
 
-STATIC_URL = 'static/'
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # =========================
 # CORS (FIXED)
